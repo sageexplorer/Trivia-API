@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
 import sys 
+import json 
 
 from models import setup_db, Question, Category
 
@@ -143,6 +144,17 @@ def create_app(test_config=None):
   Try using the word "title" to start. 
   '''
 
+  @app.route('/search', methods=['POST'])
+  def search():
+   search_term = request.get_json()['searchTerm']
+   search_data = Question.query.filter(Question.question.ilike(f'%{search_term}%'))
+
+   return jsonify({
+     'questions': [q.format() for q in search_data],
+     'current_category': None
+   })
+
+
   '''
   @TODO: 
   Create a GET endpoint to get questions based on category. 
@@ -180,19 +192,24 @@ def create_app(test_config=None):
     quiz_category = int(request.get_json()['quiz_category']['id'])
     previous_questions = request.get_json()['previous_questions']
 
-    # '''create random, and unique question for the category'''
-    all_questions = Question.query.filter_by(category=quiz_category).all()
-    # print(quiz_category)
-    # quiz = [question.format() for question in all_questions]
-    # #random_quiz = random.choice(quiz)
-    # print('MY CATEGORY IS')
-  
-    return jsonify({
-      'success': True,
-      'question': random.choice([q.format() for q in all_questions]),
-      'category_': quiz_category,
-      
-    })
+    '''create random, and unique question for the category'''
+    if quiz_category not in [1,2,3,4,5,6]:
+      unique_questions = Question.query.all()
+    else:
+      unique_questions = Question.query.filter_by(category=quiz_category).filter(Question.id.notin_(previous_questions)).all()
+
+    if len(unique_questions) > 0:
+      return jsonify({
+        'success': True,
+        'question': random.choice([q.format() for q in unique_questions]),
+        'category_': quiz_category,
+        'previous': [u.question for u in unique_questions]
+      })
+    else:
+      return jsonify({
+        'success': True,
+        'question': None
+      })
 
 
   '''
@@ -204,4 +221,3 @@ def create_app(test_config=None):
   return app
 
     
-
