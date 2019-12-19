@@ -23,11 +23,12 @@ def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
   setup_db(app)
-  CORS(app)
+  #CORS(app)
   
   '''
   @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
   '''
+  cors = CORS(app, resources={r"/api/*": {"origins": "*"}})  
 
   '''
   @TODO: Use the after_request decorator to set Access-Control-Allow
@@ -42,13 +43,14 @@ def create_app(test_config=None):
   Create an endpoint to handle GET requests 
   for all available categories.
   '''
-  @app.route('/categories')
-  def get_categories(methods=['GET']):
+  @app.route('/categories',methods=['GET'])
+  def get_categories():
     categories = Category.query.all()
-    formatted_category = [category.format() for category in categories]
+    formatted_category = {category.id: category.type for category in categories}
+    #formatted_category = [category.format() for category in categories]
 
     return jsonify({
-      'body': formatted_category,
+      'categories': formatted_category,
       'status': 200
       })
      
@@ -65,8 +67,8 @@ def create_app(test_config=None):
   ten questions per page and pagination at the bottom of the screen for three pages.
   Clicking on the page numbers should update the questions. 
   '''
-  @app.route('/questions')
-  def get_questions(methods=['GET']):
+  @app.route('/questions',methods=['GET'])
+  def get_questions():
     questions =  Question.query.order_by(Question.id).all()
     categories = Category.query.order_by(Category.type).all()
     formatted_categories = {category.id: category.type for category in categories}
@@ -89,6 +91,13 @@ def create_app(test_config=None):
   TEST: When you click the trash icon next to a question, the question will be removed.
   This removal will persist in the database and when you refresh the page. 
   '''
+  @app.route('/questions/<int:id>', methods=['DELETE'])
+  def delete_question(id):
+    Question.query.get(id).delete()
+    return jsonify({
+      'success': True
+    })
+
 
   '''
   @TODO: 
@@ -100,6 +109,28 @@ def create_app(test_config=None):
   the form will clear and the question will appear at the end of the last page
   of the questions list in the "List" tab.  
   '''
+  @app.route('/questions', methods=['POST'])
+  def add_questions():
+    question = request.get_json()
+    if question['question'] == '':
+      error = "Not Complete"
+      abort(500)
+    try:
+      Question(
+        question=question['question'],
+        answer=question['answer'],
+        category=question['category'],
+        difficulty=question['difficulty']
+        ).insert()
+      return jsonify({
+        'question': question,
+        'success': True,
+        'status':200
+        })
+    except Exception:
+      return jsonify({
+        'success': False,
+        })
 
   '''
   @TODO: 
@@ -144,6 +175,26 @@ def create_app(test_config=None):
   and shown whether they were correct or not. 
   '''
 
+  @app.route('/quizzes', methods=['POST'])
+  def get_quizzes():
+    quiz_category = int(request.get_json()['quiz_category']['id'])
+    previous_questions = request.get_json()['previous_questions']
+
+    # '''create random, and unique question for the category'''
+    all_questions = Question.query.filter_by(category=quiz_category).all()
+    # print(quiz_category)
+    # quiz = [question.format() for question in all_questions]
+    # #random_quiz = random.choice(quiz)
+    # print('MY CATEGORY IS')
+  
+    return jsonify({
+      'success': True,
+      'question': random.choice([q.format() for q in all_questions]),
+      'category_': quiz_category,
+      
+    })
+
+
   '''
   @TODO: 
   Create error handlers for all expected errors 
@@ -153,3 +204,4 @@ def create_app(test_config=None):
   return app
 
     
+
