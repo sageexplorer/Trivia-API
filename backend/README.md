@@ -52,29 +52,67 @@ Setting the `FLASK_ENV` variable to `development` will detect file changes and r
 
 Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application. 
 
-## Tasks
 
-One note before you delve into your tasks: for each endpoint you are expected to define the endpoint and response data. The frontend will be a plentiful resource because it is set up to expect certain endpoints and response data formats already. You should feel free to specify endpoints in your own way; if you do so, make sure to update the frontend or you will get some unexpected behavior. 
-
-1. Use Flask-CORS to enable cross-domain requests and set response headers. 
-2. Create an endpoint to handle GET requests for questions, including pagination (every 10 questions). This endpoint should return a list of questions, number of total questions, current category, categories. 
-3. Create an endpoint to handle GET requests for all available categories. 
-4. Create an endpoint to DELETE question using a question ID. 
-5. Create an endpoint to POST a new question, which will require the question and answer text, category, and difficulty score. 
-6. Create a POST endpoint to get questions based on category. 
-7. Create a POST endpoint to get questions based on a search term. It should return any questions for whom the search term is a substring of the question. 
-8. Create a POST endpoint to get questions to play the quiz. This endpoint should take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
-9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
-
-REVIEW_COMMENT
+API DOCUMEN TATION 
 ```
-This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 
+ 
 
 Endpoints
+GET '/questions'
+POST '/questions'
+DELETE '/questions
 GET '/categories'
-GET ...
-POST ...
-DELETE ...
+GET '/categories/<int:category_id>/questions'
+POST '/search'
+GET '/quizzes'
+
+
+GET '/questions'
+- Fetches all the questions if pagination is not defined. Page={NUM} returns 10 questions per page. 
+- Request Arguments: None, page{NUM}
+- Returns: An object with all the categories, current category, and questions available, or paginated results of the   same. 
+- Error(404) is returned if the quesitions are not found when paginated search is sent.
+{
+  "categories": {
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
+    "6": "Sports"
+  },
+  "current_category": null,
+  "questions": [
+    {
+      "answer": "Tom Cruise",
+      "category": 5,
+      "difficulty": 4,
+      "id": 4,
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    },
+    {
+      "answer": "Maya Angelou",
+      "category": 4,
+      "difficulty": 2,
+      "id": 5,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+
+POST '/questions'
+- Posts questions with the following values - category(int), question, answer, and difficulty(int).
+- Request Arguments: question, answer, category, difficulty.   
+- Returns: If successfully posted returns an object that has the posting parameters, and success code of 200
+          -If posting is not successful, returns 'success: False' and the appropriate status code(404, and 500)
+  {
+	"question": {
+		"answer": "Mt. Everest",
+		"category": 3,
+		"difficulty": 1,
+		"question": "What is the highest mountain in the world?"
+	},
+	"status": 200,
+	"success": true
+}      
 
 GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
@@ -87,9 +125,57 @@ GET '/categories'
 '5' : "Entertainment",
 '6' : "Sports"}
 
+GET '/categories/<int:category_id>/questions'
+- Fetches questions within a category. 
+- Parameter(s): <int:category_id> (required)
+- Pagination: optional
+
+- Returns: An object of questions within the category.
+{
+	'current_category': 1,
+	'questions': [{
+		'answer': 'The Liver',
+		'category': 1,
+		'difficulty': 4,
+		'id': 20,
+		'question': 'What is the heaviest organ in the human body?'
+	}, {
+		'answer': 'Alexander Fleming',
+		'category': 1,
+		'difficulty': 3,
+		'id': 21,
+		'question': 'Who discovered penicillin?'
+	}, {
+		'answer': 'Blood',
+		'category': 1,
+		'difficulty': 4,
+		'id': 22,
+		'question': 'Hematology is a branch of medicine involving the study of what?'
+	}, {
+		'answer': 'Tesla',
+		'category': 1,
+		'difficulty': 1,
+		'id': 26,
+		'question': 'who invented AC'
+	}, {
+		'answer': 'Nepal',
+		'category': 1,
+		'difficulty': 1,
+		'id': 30,
+		'question': 'where is kathmandu?'
+	}, {
+		'answer': 'wright brothers',
+		'category': 1,
+		'difficulty': 1,
+		'id': 33,
+		'question': 'who invented airplanes?'
+	}],
+	'total_questions': 6
+}
+
+
+
 ```
-
-
 ## Testing
 To run the tests, run
 ```
