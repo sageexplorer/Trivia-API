@@ -73,29 +73,29 @@ GET '/questions'
 - Returns: An object with all the categories, current category, and questions available, or paginated results of the   same. 
 - Error(404) is returned if the quesitions are not found when paginated search is sent.
 {
-  "categories": {
-    "1": "Science",
-    "2": "Art",
-    "3": "Geography",
-    "4": "History",
-    "5": "Entertainment",
-    "6": "Sports"
-  },
-  "current_category": null,
-  "questions": [
-    {
-      "answer": "Tom Cruise",
-      "category": 5,
-      "difficulty": 4,
-      "id": 4,
-      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    "categories": {
+        "1": "Science",
+        "2": "Art",
+        "3": "Geography",
+        "4": "History",
+        "5": "Entertainment",
+        "6": "Sports"
     },
-    {
-      "answer": "Maya Angelou",
-      "category": 4,
-      "difficulty": 2,
-      "id": 5,
-      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    "current_category": null,
+    "questions": [
+        {
+        "answer": "Tom Cruise",
+        "category": 5,
+        "difficulty": 4,
+        "id": 4,
+        "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+        },
+        {
+        "answer": "Maya Angelou",
+        "category": 4,
+        "difficulty": 2,
+        "id": 5,
+        "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
     },
 
 POST '/questions'
@@ -104,26 +104,27 @@ POST '/questions'
 - Returns: If successfully posted returns an object that has the posting parameters, and success code of 200
           -If posting is not successful, returns 'success: False' and the appropriate status code(404, and 500)
   {
-	"question": {
-		"answer": "Mt. Everest",
-		"category": 3,
-		"difficulty": 1,
-		"question": "What is the highest mountain in the world?"
-	},
-	"status": 200,
-	"success": true
+        "question": {
+            "answer": "Mt. Everest",
+            "category": 3,
+            "difficulty": 1,
+            "question": "What is the highest mountain in the world?"
+        },
+        "status": 200,
+        "success": true
 }      
 
 GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
-{'1' : "Science",
-'2' : "Art",
-'3' : "Geography",
-'4' : "History",
-'5' : "Entertainment",
-'6' : "Sports"}
+    { '1' : "Science",
+        '2' : "Art",
+        '3' : "Geography",
+        '4' : "History",
+        '5' : "Entertainment",
+        '6' : "Sports"
+}
 
 GET '/categories/<int:category_id>/questions'
 - Fetches questions within a category. 
