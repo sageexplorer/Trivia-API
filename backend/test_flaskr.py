@@ -14,7 +14,7 @@ class TriviaTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
-        self.database_name = "test_trivia"
+        self.database_name = "trivia"
         self.database_path = "postgres://{}/{}".format('localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
 
@@ -37,6 +37,12 @@ class TriviaTestCase(unittest.TestCase):
         res = self.client().get('/questions')
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200, 'Response status is not 200')
+
+    def test_questions_with_pagination(self):
+        res = self.client().get('questions?page=1')    
+        data = json.loads(res.data)
+        self.assertEqual(len(data['questions']), 10, 'Result is not limited to 10 questions')
+      
 
     def test_questions_with_not_existing_pagination(self):
         res = self.client().get('/questions/?page=900')
@@ -86,7 +92,6 @@ class TriviaTestCase(unittest.TestCase):
         res = self.client().post('/quizzes', json=body)
         data = json.loads(res.data)
         self.assertEqual((data['category_']), 1, 'Category do not match for the quizzes!')
-
 
 
 # Make the tests conveniently executable
