@@ -187,6 +187,39 @@ DELETE '/questions'
   "success":true
   }
 
+POST '/search' 
+- Searches, and returns questions defined in the search term.
+- Returns: An object of questions, and current category. Returns status code 200 upon success, and 404 when the        search term is not found. 
+- Parameters: Takes searchTerm as an argument (required)
+{
+'current_category': None,
+'questions': [{
+'answer': 'Maya Angelou',
+'category': 4,
+'difficulty': 2,
+'id': 5,
+'question': "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+}]
+}
+
+GET '/quizzes'
+- Fetches questions(quizzes) per category not previosuly returned. Returns status code of 200 when succeeds.
+- Returns: category_id, previous questions, questions, and success status(if succesful)
+- Parameters: (a) category_id (optional), When no category is defined, returns ALL questions
+              (b) previous_quesions: Questions that were returned in the previous batch. 
+
+{
+'category_': 1,
+'previous': ['What is the heaviest organ in the human body?', 'Who discovered penicillin?', 'Hematology is a branch   of medicine involving the study of what?', 'who invented AC', 'where is kathmandu?', 'who invented airplanes?'],
+'question': {
+'answer': 'Tesla',
+'category': 1,
+'difficulty': 1,
+'id': 26,
+'question': 'who invented AC'
+ },
+'success': True
+}
 
 ```
 ## Testing
