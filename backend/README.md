@@ -68,112 +68,124 @@ GET '/quizzes'
 
 
 GET '/questions'
-- Fetches all the questions if pagination is not defined. Page={NUM} returns 10 questions per page. 
+
+- Fetches all the questions if pagination is not defined. Page={NUM} returns 10 questions per page.
 - Request Arguments: None, page{NUM}
-- Returns: An object with all the categories, current category, and questions available, or paginated results of the   same. 
+- Returns: An object with all the categories, current category, and questions available, or paginated results of the same.
 - Error(404) is returned if the quesitions are not found when paginated search is sent.
-{
-    "categories": {
-        "1": "Science",
-        "2": "Art",
-        "3": "Geography",
-        "4": "History",
-        "5": "Entertainment",
-        "6": "Sports"
-    },
-    "current_category": null,
-    "questions": [
-        {
-        "answer": "Tom Cruise",
-        "category": 5,
-        "difficulty": 4,
-        "id": 4,
-        "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-        },
-        {
-        "answer": "Maya Angelou",
-        "category": 4,
-        "difficulty": 2,
-        "id": 5,
-        "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-    },
+  {
+  "categories": {
+  "1": "Science",
+  "2": "Art",
+  "3": "Geography",
+  "4": "History",
+  "5": "Entertainment",
+  "6": "Sports"
+  },
+  "current_category": null,
+  "questions": [
+  {
+  "answer": "Tom Cruise",
+  "category": 5,
+  "difficulty": 4,
+  "id": 4,
+  "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+  },
+  {
+  "answer": "Maya Angelou",
+  "category": 4,
+  "difficulty": 2,
+  "id": 5,
+  "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+  },
 
 POST '/questions'
+
 - Posts questions with the following values - category(int), question, answer, and difficulty(int).
-- Request Arguments: question, answer, category, difficulty.   
+- Request Arguments: question, answer, category, difficulty.
 - Returns: If successfully posted returns an object that has the posting parameters, and success code of 200
-          -If posting is not successful, returns 'success: False' and the appropriate status code(404, and 500)
+  -If posting is not successful, returns 'success: False' and the appropriate status code(404, and 500)
   {
-        "question": {
-            "answer": "Mt. Everest",
-            "category": 3,
-            "difficulty": 1,
-            "question": "What is the highest mountain in the world?"
-        },
-        "status": 200,
-        "success": true
-}      
+  "question": {
+  "answer": "Mt. Everest",
+  "category": 3,
+  "difficulty": 1,
+  "question": "What is the highest mountain in the world?"
+  },
+  "status": 200,
+  "success": true
+  }
 
 GET '/categories'
+
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
-- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
-    { '1' : "Science",
-        '2' : "Art",
-        '3' : "Geography",
-        '4' : "History",
-        '5' : "Entertainment",
-        '6' : "Sports"
-}
+- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs.
+  { '1' : "Science",
+  '2' : "Art",
+  '3' : "Geography",
+  '4' : "History",
+  '5' : "Entertainment",
+  '6' : "Sports"
+  }
 
 GET '/categories/<int:category_id>/questions'
-- Fetches questions within a category. 
+
+- Fetches questions within a category.
 - Parameter(s): <int:category_id> (required)
 - Pagination: optional
 
 - Returns: An object of questions within the category.
-{
-	'current_category': 1,
-	'questions': [{
-		'answer': 'The Liver',
-		'category': 1,
-		'difficulty': 4,
-		'id': 20,
-		'question': 'What is the heaviest organ in the human body?'
-	}, {
-		'answer': 'Alexander Fleming',
-		'category': 1,
-		'difficulty': 3,
-		'id': 21,
-		'question': 'Who discovered penicillin?'
-	}, {
-		'answer': 'Blood',
-		'category': 1,
-		'difficulty': 4,
-		'id': 22,
-		'question': 'Hematology is a branch of medicine involving the study of what?'
-	}, {
-		'answer': 'Tesla',
-		'category': 1,
-		'difficulty': 1,
-		'id': 26,
-		'question': 'who invented AC'
-	}, {
-		'answer': 'Nepal',
-		'category': 1,
-		'difficulty': 1,
-		'id': 30,
-		'question': 'where is kathmandu?'
-	}, {
-		'answer': 'wright brothers',
-		'category': 1,
-		'difficulty': 1,
-		'id': 33,
-		'question': 'who invented airplanes?'
-	}],
-	'total_questions': 6
-}
+  {
+  'current_category': 1,
+  'questions': [{
+  'answer': 'The Liver',
+  'category': 1,
+  'difficulty': 4,
+  'id': 20,
+  'question': 'What is the heaviest organ in the human body?'
+  }, {
+  'answer': 'Alexander Fleming',
+  'category': 1,
+  'difficulty': 3,
+  'id': 21,
+  'question': 'Who discovered penicillin?'
+  }, {
+  'answer': 'Blood',
+  'category': 1,
+  'difficulty': 4,
+  'id': 22,
+  'question': 'Hematology is a branch of medicine involving the study of what?'
+  }, {
+  'answer': 'Tesla',
+  'category': 1,
+  'difficulty': 1,
+  'id': 26,
+  'question': 'who invented AC'
+  }, {
+  'answer': 'Nepal',
+  'category': 1,
+  'difficulty': 1,
+  'id': 30,
+  'question': 'where is kathmandu?'
+  }, {
+  'answer': 'wright brothers',
+  'category': 1,
+  'difficulty': 1,
+  'id': 33,
+  'question': 'who invented airplanes?'
+  }],
+  'total_questions': 6
+  }
 
+DELETE '/questions'
+
+- Deletes a question.
+- Returns: Success with status code of 200 upon deletion, and 404, or 500 upon unsuccessful deletion.
+- Paramteres: <int:question_id>
+  {
+  "success":true
+  }
 
 
 ```
